@@ -1,8 +1,12 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+from pathlib import Path
 
 def clean_drone_data(file_path):
+    # Make sure it's a Path object
+    file_path = Path(file_path)
+    
     # Load dataset
     df = pd.read_csv(file_path)
     
