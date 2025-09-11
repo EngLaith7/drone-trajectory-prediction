@@ -54,7 +54,5 @@ def get_cleaned_data():
     return clean_drone_data(csv_files[0])
 
 
-df = get_cleaned_data()
-print("✅ Cleaned dataset shape:", df.shape)
-print(df.head())
+
 
