@@ -24,22 +24,21 @@ def clean_drone_data(file_path: Path):
         df = df.sort_values("time")
         df = df.set_index("time").interpolate(method="linear").reset_index()
 
-    # Filter unrealistic sensor ranges
-    conditions = (
-        df["accel_x"].between(-20, 20) &
-        df["accel_y"].between(-20, 20) &
-        df["accel_z"].between(-20, 20) &
-        df["gyro_x"].between(-2000, 2000) &
-        df["gyro_y"].between(-2000, 2000) &
-        df["gyro_z"].between(-2000, 2000) &
-        df["mag_x"].between(-100, 100) &
-        df["mag_y"].between(-100, 100) &
-        df["mag_z"].between(-100, 100)
-    )
-    df = df[conditions]
+    sensor_cols = [
+        "accel_x", "accel_y", "accel_z",
+        "gyro_x", "gyro_y", "gyro_z",
+        "mag_x", "mag_y", "mag_z"
+    ]
+    # Apply 3σ rule for each sensor column
+    for col in sensor_cols:
+        if col in df.columns:  # avoid KeyError
+            mean, std = df[col].mean(), df[col].std()
+            df = df[df[col].between(mean - 3*std, mean + 3*std)]
 
     return df
+   
 
+   
 def get_cleaned_data():
     """
     Finds the first CSV inside /data, cleans it, and returns the DataFrame.
@@ -53,3 +52,9 @@ def get_cleaned_data():
 
     print(f"📂 Using dataset: {csv_files[0].name}")
     return clean_drone_data(csv_files[0])
+
+
+df = get_cleaned_data()
+print("✅ Cleaned dataset shape:", df.shape)
+print(df.head())
+
