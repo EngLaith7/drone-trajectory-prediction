@@ -20,7 +20,7 @@ from src.data.clean_data import get_cleaned_data
 # ======================
 # 1. Load cleaned dataset
 # ======================
-df = get_cleaned_data()   # <--- CLEANED DATA HERE
+df = get_cleaned_data(use_grid_search=True)   # <--- CLEANED DATA HERE
 
 # ======================
 # 2. Select features and targets
