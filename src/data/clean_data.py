@@ -134,6 +134,7 @@ def get_cleaned_data(sigma_threshold: float = 3.0,
     if use_grid_search:
         best_params = _grid_search_cleaning(file_path)
         sigma_threshold = best_params["sigma_threshold"]
+        
         dropna = best_params["dropna"]
 
     return clean_drone_data(file_path,
