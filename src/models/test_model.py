@@ -75,3 +75,19 @@ print("RMSE per output:", [np.sqrt(mean_squared_error(y_true[:, i], y_pred[:, i]
 print("\n🔮 Example predictions vs actual:")
 for i in range(5):  # show 5 samples
     print(f"True: {y_true[i]}, Pred: {y_pred[i]}")
+# ======================
+# 5. Report performance
+# ======================
+r2_scores = [r2_score(y_true[:, i], y_pred[:, i]) for i in range(y_true.shape[1])]
+mae_scores = [mean_absolute_error(y_true[:, i], y_pred[:, i]) for i in range(y_true.shape[1])]
+rmse_scores = [np.sqrt(mean_squared_error(y_true[:, i], y_pred[:, i])) for i in range(y_true.shape[1])]
+
+print("\n📊 Model Evaluation on Test Dataset")
+print("R² per output:", r2_scores)
+print("MAE per output:", mae_scores)
+print("RMSE per output:", rmse_scores)
+
+# === Add overall "accuracy-like" score ===
+mean_r2 = np.mean(r2_scores)
+print(f"\n✅ Overall Score (Mean R²): {mean_r2:.4f}")
+
