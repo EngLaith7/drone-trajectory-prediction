@@ -5,18 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from mpl_toolkits.mplot3d import Axes3D  # مطلوب لرسم 3D
 
-# ========================
-# Load Data
-# ========================
-#make sure that you copied the imu_data.csv file to the data folder
-def load_data(path: str | Path) -> pd.DataFrame:
-    """
-    Pathlib using CS dowmload data from Path or string Path: Path.
-    """
-    path = Path(path)  # Path make sure that it's like.
-    if not path.exists():
-        raise FileNotFoundError(f"The file is not present: {path}")
-    return pd.read_csv(path)
+
 
 # ========================
 # 1. Histogram Distribution
