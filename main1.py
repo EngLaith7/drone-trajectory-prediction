@@ -33,9 +33,14 @@ def main():
     # 2. Load data
     df = get_cleaned_data()
     # 3. Visualizations
-    plot_feature_distributions(df)
-    plot_correlation_heatmap(df)
+    plot_accelerometer_distribution(df)
+    plot_gyroscope_distribution(df)
+    plot_magnetometer_distribution(df)
+    plot_accelerometer_timeseries(df)
+    plot_gyroscope_timeseries(df)
     plot_3d_trajectory(df)
+    plot_orientation(df)
+    plot_correlation_heatmap(df)
     # 4. Feature selection
     sensor_cols = ['accel_x', 'accel_y', 'accel_z', 'gyro_x', 'gyro_y', 'gyro_z', 'mag_x', 'mag_y', 'mag_z']
     target_cols = ['pos_x', 'pos_y', 'pos_z', 'roll', 'pitch', 'yaw']
