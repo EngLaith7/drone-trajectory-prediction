@@ -12,6 +12,9 @@ from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 import numpy as np
 import joblib
 from pathlib import Path
+from visualizations import (plot_accelerometer_distribution, plot_gyroscope_distribution, plot_magnetometer_distribution,
+                            plot_accelerometer_timeseries, plot_gyroscope_timeseries, plot_3d_trajectory,
+                            plot_orientation, plot_correlation_heatmap)
 
 def print_project_info():
     print("="*50)
