@@ -1,10 +1,7 @@
 from pathlib import Path
 import Visualization as vz
-
-# Load data
-#make sure that you copied the imu_data.csv file to the data folder
-data_path = Path("data") / "imu_data.csv"
-df = vz.load_data(data_path)
+from clean_data import get_cleaned_data
+df = get_cleaned_data(use_grid_search=True)
 
 # Call visualization functions according to the need
 vz.plot_accelerometer_distribution(df)
