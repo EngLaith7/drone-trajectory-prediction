@@ -3,16 +3,25 @@
 Simple AI Project - Drone Sensor Data Regressor
 Main application entry point (function calls only)
 """
-
-from clean_data import get_cleaned_data
-from sklearn.preprocessing import StandardScaler
+import sys
+from pathlib import Path
+import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
-import numpy as np
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+import seaborn as sns
 import joblib
-from pathlib import Path
-from visualizations import (plot_accelerometer_distribution, plot_gyroscope_distribution, plot_magnetometer_distribution,
+
+# Add src/data and src/models to path for imports
+repo_root = Path(__file__).resolve().parents[0]
+sys.path.append(str(repo_root / "src" / "data"))
+sys.path.append(str(repo_root / "src" / "models"))
+
+from clean_data import get_cleaned_data
+from Visualization import (plot_accelerometer_distribution, plot_gyroscope_distribution, plot_magnetometer_distribution,
                             plot_accelerometer_timeseries, plot_gyroscope_timeseries, plot_3d_trajectory,
                             plot_orientation, plot_correlation_heatmap)
 
