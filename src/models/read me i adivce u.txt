@@ -1,6 +1,0 @@
-you can run the model training directly or you can use the repo root code:
-cd "path..../.venv/drone-trajectory-prediction"
-python -m src.models.train_model
-
-run test_model same way
-

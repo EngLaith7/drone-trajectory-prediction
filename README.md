@@ -54,11 +54,45 @@ project-name/
 ## Usage
 
 ### Basic Usage
-..
+```python
+from src.models.training import train_model
+from src.data.clean_data import get_cleaned_data
 
+# Load and preprocess data
+df = get_cleaned_data(use_grid_search=True)
+
+# Train model and Make predictions
+train_model()
+```
+### Running Experiments
+```bash
+# Run the main application
+uv run python main.py
+
+# Run the training script
+uv run python src/models/training.py
+
+# Run Jupyter notebook
+uv run jupyter notebook notebooks/EDA.ipynb
+```
+### Chat Applications
+```bash
+# First, train the model (if not already done)
+uv run python main.py
+
+# Web-based chat interface (Streamlit)
+uv run streamlit run app.py
+```
 ## Results
-..
 
+- **Model R2_score**: 0.8200
+- **Training Time**: 69 minutes
+- **Algorithm**: Random Forest Regressor
+- **Key Findings**: 
+  - Random Forest Regressor performed beter than linear regressor
+  - Applying σ-rule (hyperparameterized) helps in filtering data for the model
+  - Model suffer limitations becuase the using of data of single dorne flight
+  
 ## Contributing
 
 1. Fork the repository
