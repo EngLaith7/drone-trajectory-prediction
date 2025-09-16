@@ -16,15 +16,13 @@ import joblib
 import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 
-# Import data + training function
+# Import dataset
 from src.data.clean_data import get_cleaned_data
-from src.models.train_model import train_model  # <-- you must implement this if not already
 
 # =================================================
 # Path setup
 # =================================================
-model_dir = repo_root / "src" / "model"
-model_dir.mkdir(parents=True, exist_ok=True)
+model_dir = repo_root / "src" / "models"
 
 # =================================================
 # Model definitions
@@ -52,30 +50,32 @@ class DroneGRU(torch.nn.Module):
 
 
 # =================================================
-# Load or Train Model
+# Load Model + Scalers (NO TRAINING)
 # =================================================
-def load_or_train_model(model_type="LSTM"):
+def load_model(model_type="LSTM"):
     model_file = model_dir / f"drone_{model_type.lower()}_model.pth"
     scaler_X_file = model_dir / "scaler_X.pkl"
     scaler_y_file = model_dir / "scaler_y.pkl"
 
-    if model_file.exists() and scaler_X_file.exists() and scaler_y_file.exists():
-        st.sidebar.success(f"✅ Loaded trained {model_type} model")
-        scaler_X = joblib.load(scaler_X_file)
-        scaler_y = joblib.load(scaler_y_file)
+    if not model_file.exists() or not scaler_X_file.exists() or not scaler_y_file.exists():
+        st.error(f"❌ {model_type} model or scalers not found in {model_dir}")
+        st.stop()
 
-        input_dim, hidden_dim, output_dim, num_layers = 9, 128, 6, 2
-        model = DroneLSTM(input_dim, hidden_dim, output_dim, num_layers) if model_type == "LSTM" \
-            else DroneGRU(input_dim, hidden_dim, output_dim, num_layers)
+    # Load scalers
+    scaler_X = joblib.load(scaler_X_file)
+    scaler_y = joblib.load(scaler_y_file)
 
-        model.load_state_dict(torch.load(model_file, map_location="cpu"))
-        model.eval()
-        return model, scaler_X, scaler_y
+    # Define model
+    input_dim, hidden_dim, output_dim, num_layers = 9, 128, 6, 2
+    model = DroneLSTM(input_dim, hidden_dim, output_dim, num_layers) if model_type == "LSTM" \
+        else DroneGRU(input_dim, hidden_dim, output_dim, num_layers)
 
-    else:
-        st.sidebar.warning(f"⚠️ No pre-trained {model_type} model found. Training now...")
-        train_model(model_type=model_type)  # <-- must save model + scalers
-        return load_or_train_model(model_type)
+    # Load weights
+    model.load_state_dict(torch.load(model_file, map_location="cpu"))
+    model.eval()
+
+    st.sidebar.success(f"✅ Loaded pre-trained {model_type} model")
+    return model, scaler_X, scaler_y
 
 
 # =================================================
@@ -98,8 +98,8 @@ st.title("🚁 Drone Model Evaluation Dashboard")
 model_type = st.sidebar.radio("Choose Model Type:", ["LSTM", "GRU"])
 menu = st.sidebar.radio("Choose Action:", ["Run Evaluation", "Manual Prediction"])
 
-# Load or train model
-model, scaler_X, scaler_y = load_or_train_model(model_type)
+# Load pre-trained model
+model, scaler_X, scaler_y = load_model(model_type)
 
 
 # === Evaluation Mode ===
