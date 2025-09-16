@@ -53,7 +53,7 @@ def plot_gyroscope_timeseries(df: pd.DataFrame):
 # ========================
 # 3. 3D Trajectory (Position)
 # ========================
-def plot_3d_trajectory(df: pd.DataFrame):
+def plot_3dplot_trajectory(df: pd.DataFrame):
     fig = plt.figure(figsize=(10,7))
     ax = fig.add_subplot(111, projection='3d')
     ax.plot(df['pos_x'], df['pos_y'], df['pos_z'], color='blue')
@@ -80,7 +80,7 @@ def plot_orientation(df: pd.DataFrame):
 # ========================
 # 5. Correlation Heatmap
 # ========================
-def plot_correlation_heatmap(df: pd.DataFrame):
+def plot_correlation_heatmap_plot(df: pd.DataFrame):
     plt.figure(figsize=(12,8))
     sns.heatmap(df.corr(), annot=False, cmap="coolwarm")
     plt.title("Correlation Heatmap of Features")

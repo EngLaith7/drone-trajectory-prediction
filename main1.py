@@ -13,8 +13,8 @@ import numpy as np
 import joblib
 from pathlib import Path
 from src.data.Visualization import (plot_accelerometer_distribution, plot_gyroscope_distribution, plot_magnetometer_distribution,
-                            plot_accelerometer_timeseries, plot_gyroscope_timeseries, plot_3d_trajectory,
-                            plot_orientation, plot_correlation_heatmap, plot_trajectory_partial)
+                            plot_accelerometer_timeseries, plot_gyroscope_timeseries, plot_3dplot_trajectory,
+                            plot_orientation, plot_correlation_heatmap_plot, plot_trajectory_partial)
 
 
 def print_project_info():
@@ -47,9 +47,9 @@ def main():
     plot_magnetometer_distribution(df)
     plot_accelerometer_timeseries(df)
     plot_gyroscope_timeseries(df)
-    plot_3d_trajectory(df)
+    plot_3dplot_trajectory(df)
     plot_orientation(df)
-    plot_correlation_heatmap(df)
+    plot_correlation_heatmap_plot(df)
     plot_trajectory_partial(df,1000)
     # 4. Feature selection
     sensor_cols = ['accel_x', 'accel_y', 'accel_z', 'gyro_x', 'gyro_y', 'gyro_z', 'mag_x', 'mag_y', 'mag_z']
