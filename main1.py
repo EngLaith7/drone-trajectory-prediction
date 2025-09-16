@@ -24,6 +24,7 @@ from clean_data import get_cleaned_data
 from Visualization import (plot_accelerometer_distribution, plot_gyroscope_distribution, plot_magnetometer_distribution,
                             plot_accelerometer_timeseries, plot_gyroscope_timeseries, plot_3d_trajectory,
                             plot_orientation, plot_correlation_heatmap)
+from training import train_model
 
 def print_project_info():
     print("="*50)
@@ -43,8 +44,11 @@ def main():
     # 1. Print project info
     print_project_info()
     # 2. Load data
+    print("📊 Loading and cleaning data...")
     df = get_cleaned_data()
+    print(f"Loaded cleaned dataset with shape: {df.shape}")
     # 3. Visualizations
+    print("📊 Visualizing feature distributions...")
     plot_accelerometer_distribution(df)
     plot_gyroscope_distribution(df)
     plot_magnetometer_distribution(df)
@@ -53,36 +57,9 @@ def main():
     plot_3d_trajectory(df)
     plot_orientation(df)
     plot_correlation_heatmap(df)
-    # 4. Feature selection
-    sensor_cols = ['accel_x', 'accel_y', 'accel_z', 'gyro_x', 'gyro_y', 'gyro_z', 'mag_x', 'mag_y', 'mag_z']
-    target_cols = ['pos_x', 'pos_y', 'pos_z', 'roll', 'pitch', 'yaw']
-    X, y = df[sensor_cols].values, df[target_cols].values
-    # 5. Normalization
-    scaler_X, scaler_y = StandardScaler(), StandardScaler()
-    X, y = scaler_X.fit_transform(X), scaler_y.fit_transform(y)
-    # 6. Sliding window
-    window_size = 50
-    X_seq, y_seq = create_windows(X, y, window_size)
-    # 7. Train/test split
-    X_train, X_test, y_train, y_test = train_test_split(X_seq, y_seq, test_size=0.2, random_state=42)
-    # 8. Model training
-    model = MLPRegressor(hidden_layer_sizes=(128, 64), activation='relu', solver='adam', max_iter=50, batch_size=64, random_state=42, verbose=True)
-    model.fit(X_train, y_train)
-    # 9. Evaluation
-    y_pred = model.predict(X_test)
-    y_test_inv = scaler_y.inverse_transform(y_test)
-    y_pred_inv = scaler_y.inverse_transform(y_pred)
-    print("R² per output:", [r2_score(y_test_inv[:, i], y_pred_inv[:, i]) for i in range(y_test_inv.shape[1])])
-    print("MAE per output:", [mean_absolute_error(y_test_inv[:, i], y_pred_inv[:, i]) for i in range(y_test_inv.shape[1])])
-    print("RMSE per output:", [np.sqrt(mean_squared_error(y_test_inv[:, i], y_pred_inv[:, i])) for i in range(y_test_inv.shape[1])])
-    # 10. Save model
-    save_model(model, scaler_X, scaler_y)
-    # 11. Example predictions
-    for i in range(5):
-        print(f"True: {np.round(y_test_inv[i], 2)}, Pred: {np.round(y_pred_inv[i], 2)}")
-    print("✅ Project completed successfully!")
-    print("📁 Feature plots: drone_feature_distributions.png, drone_corr_heatmap.png, drone_trajectory.png")
-    print("📦 Models saved in 'models/' directory.")
+
+    print("🤖 Training the model...")
+    train_model()
 
 if __name__ == "__main__":
     main()
