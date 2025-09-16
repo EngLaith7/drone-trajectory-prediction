@@ -5,19 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from mpl_toolkits.mplot3d import Axes3D  # مطلوب لرسم 3D
 
-# ========================
-# تحميل البيانات
-# ========================
-#make sure that you copied the imu_data.csv file to the data folder
-def load_data(path: str | Path) -> pd.DataFrame:
-    """
-    تحميل البيانات من ملف CSV باستخدام pathlib.
-    path: مسار الملف (string أو Path)
-    """
-    path = Path(path)  # تأكد أنه كائن Path
-    if not path.exists():
-        raise FileNotFoundError(f"الملف غير موجود: {path}")
-    return pd.read_csv(path)
+
 
 # ========================
 # 1. Histogram Distribution
@@ -96,4 +84,25 @@ def plot_correlation_heatmap(df: pd.DataFrame):
     plt.figure(figsize=(12,8))
     sns.heatmap(df.corr(), annot=False, cmap="coolwarm")
     plt.title("Correlation Heatmap of Features")
+    plt.show()
+
+# ========================
+# 6. trajectory_partial
+# ========================
+def plot_trajectory_partial(df: pd.DataFrame, k: int):
+    """
+    drone (Trajectory) only point of the k draw
+    """
+    if k > len(df):
+        k = len(df)  # If the user use a larger number of data size
+
+    df_part = df.iloc[:k]
+
+    fig = plt.figure(figsize=(10,7))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot(df_part['pos_x'], df_part['pos_y'], df_part['pos_z'], color='blue')
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    ax.set_title(f"Drone Trajectory - First {k} Points")
     plt.show()
