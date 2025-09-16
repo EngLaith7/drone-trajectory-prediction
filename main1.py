@@ -4,7 +4,7 @@ Simple AI Project - Drone Sensor Data Regressor
 Main application entry point (function calls only)
 """
 
-from clean_data import get_cleaned_data
+from src.data.clean_data import get_cleaned_data
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPRegressor
@@ -12,9 +12,10 @@ from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 import numpy as np
 import joblib
 from pathlib import Path
-from visualizations import (plot_accelerometer_distribution, plot_gyroscope_distribution, plot_magnetometer_distribution,
+from src.data.Visualization import (plot_accelerometer_distribution, plot_gyroscope_distribution, plot_magnetometer_distribution,
                             plot_accelerometer_timeseries, plot_gyroscope_timeseries, plot_3d_trajectory,
-                            plot_orientation, plot_correlation_heatmap)
+                            plot_orientation, plot_correlation_heatmap, plot_trajectory_partial)
+
 
 def print_project_info():
     print("="*50)
@@ -44,6 +45,7 @@ def main():
     plot_3d_trajectory(df)
     plot_orientation(df)
     plot_correlation_heatmap(df)
+    plot_trajectory_partial(df,1000)
     # 4. Feature selection
     sensor_cols = ['accel_x', 'accel_y', 'accel_z', 'gyro_x', 'gyro_y', 'gyro_z', 'mag_x', 'mag_y', 'mag_z']
     target_cols = ['pos_x', 'pos_y', 'pos_z', 'roll', 'pitch', 'yaw']
