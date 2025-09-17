@@ -43,7 +43,7 @@ y = scaler_y.fit_transform(y)
 
 # Save scalers in src/models
 model_dir = Path(__file__).parent
-joblib.dump(scaler_X, model_dir / "scaler_X.pkl")
+joblib.dump(scaler_X, model_dir / "scaler_X_1.pkl")
 joblib.dump(scaler_y, model_dir / "scaler_y.pkl")
 
 # ======================
@@ -95,5 +95,5 @@ print("RMSE per output:", [np.sqrt(mean_squared_error(y_true[:, i], y_pred[:, i]
 # ======================
 # 8. Save trained model
 # ======================
-joblib.dump(model, model_dir / "drone_model.pkl")
+joblib.dump(model, model_dir / "drone_model_1.pkl")
 print("✅ Model and scalers saved successfully in src/models/")
